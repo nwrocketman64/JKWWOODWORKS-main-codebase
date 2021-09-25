@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <h2>Enter the Product Details</h2>
+        <form action="/admin/add-products" method="POST" enctype="multipart/form-data">
+            <label for="name">Name: </label>
+            <input type="text" name="name" id="name" value="{% if productTitle is defined %}{{ productTitle }}{% endif %}">
+            <label for="price">Starting Price: </label>
+            <input type="number" step="0.01" name="price" id="price" value="{% if price is defined %}{{ price }}{% endif %}">
+            <label for="image">Image: </label>
+            <input type="file" name="image" id="image">
+            <label for="options">Options: </label>
+            <textarea name="options" id="options" rows="10">{% if options is defined %}{{ options }}{% endif %}</textarea>
+            <label for="description">Description: </label>
+            <textarea name="description" id="description" rows="10">{% if description is defined %}{{ description }}{% endif %}</textarea>
+            <label for="url">External Link: </label>
+            <input type="url" id="url" name="url" value="{% if url is defined %}{{ url }}{% endif %}">
+            <button type="submit">Add Product</button>
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        </form>
+    </section>
+{% endblock %}

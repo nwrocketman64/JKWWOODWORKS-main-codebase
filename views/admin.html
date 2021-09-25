@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <h2>List of Products</h2>
+        <ul>
+        {% for product in products %}
+            <li>
+                {{ product.title }} | <a href="/admin/edit-product/{{ product.id }}">Edit Product</a> | <a href="/admin/delete-product/{{ product.id }}">Delete Product</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+    <section>
+        <h2>Other Links</h2>
+        <ul>
+            <li>
+                <a href="/admin/add-products">Add a Product: </a>Click
+                here to add a product.
+            </li>
+            <li>
+                <a href="/admin/reset-password">Reset Password: </a>Click here
+                to reset the password.
+            </li>
+        </ul>
+        <form action="/logout" method="POST">
+            <button>Logout</button>
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        </form>
+    </section>
+{% endblock %}

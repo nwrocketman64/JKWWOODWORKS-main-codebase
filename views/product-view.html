@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="productViewCont">
+        <img src="data:image/{{ item.img.contentType }};base64,{{ item.img.data.toString('base64') }}" alt="{{ item.title }}">
+        <div class=productView>
+            <h2>{{ item.title }}</h2>
+            <h3>Price: ${{ item.price }}</h3>
+            <h3>Description</h3>
+            <p>{{ item.description | nl2br | safe }}</p>
+            <h3>Options</h3>
+            <p>{{ item.options | nl2br | safe }}</p>
+            <p class="bttn"><a href="{{ item.url }}">Buy Now</a></p>
+        </div>
+    </section>
+{% endblock %}

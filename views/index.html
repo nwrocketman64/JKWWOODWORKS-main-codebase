@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if product is defined %}
+    <section>
+        <h2>The Latest Product</h2>
+        <div class="item">
+            <img src="data:image/{{ product.img.contentType }};base64,{{ product.img.data.toString('base64') }}" alt="{{ product.title }}">
+            <h3>{{ product.title }}</h3>
+            <p><a href="/product-view/{{ product.id }}">Details</a></p>
+        </div>
+    </section>
+{% endif %}
+    <section>
+        <h2>Site Navigation</h2>
+        <p>
+            Here are some other links for this website. All links
+            below are shown in the menu bar.
+        </p>
+        <ul>
+            <li>
+                <a href="/products">Products:</a> See the complete list of
+                woods products that being offered.
+            </li>
+            <li>
+                <a href="/contact">Contact:</a> Go here to see us some feedback
+                either on this website or the products sold here.
+            </li>
+            <li>
+                <a href="/about">About:</a> More information about us.
+            </li>
+        </ul>
+    </section>
+{% endblock %}
