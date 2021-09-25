@@ -7,7 +7,7 @@ basic admin page for the client to manage the products listed in the website and
 navigation for any users to lookup products produced by the client. The users can also
 message the client through the contact form page. This website includes features such 
 cookie session and image uploads. The website is designed to run through
-[Heroku] (https://www.heroku.com/)
+[Heroku](https://www.heroku.com/)
 
 # Installing
 To install the website for running on your computer, you can clone the codebase either by
