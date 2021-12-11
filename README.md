@@ -13,7 +13,7 @@ cookie session and image uploads. The website is designed to run through
 To install the website for running on your computer, you can clone the codebase either by
 using the GitHub website or through git. Once it is on your computer, to get the website
 running you must create an .env.process which contains the enviroment variable for
-MONODB_URL, SESSION_SECRET, GMAIL_USER, and GMAIL_PASS. Once that file, you can install all 
+MONOGDB_URL, SESSION_SECRET, GMAIL_USER, and GMAIL_PASS. Once that file, you can install all 
 the needed libraries using the npm package manager.
 ```
 npm install
