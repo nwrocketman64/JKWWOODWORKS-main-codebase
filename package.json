@@ -1,30 +1,8 @@
 {
-  "name": "jdkwoodworks-node",
-  "version": "1.0.0",
+  "name": "jkwwoodworks-main-codebase",
+  "version": "1.0.1",
   "description": "The codebase for the website called jdkwoodworks",
   "main": "app.js",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.1",
-    "connect-flash": "^0.1.1",
-    "connect-mongodb-session": "^3.1.1",
-    "crypto": "^1.0.1",
-    "csurf": "^1.11.0",
-    "custom-env": "^2.0.1",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "express-validator": "^6.14.0",
-    "fsevents": "^2.3.2",
-    "mongodb": "^4.2.1",
-    "mongoose": "^6.1.1",
-    "multer": "^1.4.4",
-    "nodemailer": "^6.7.2",
-    "nunjucks": "^3.2.3",
-    "sharp": "^0.29.3"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
   "scripts": {
     "test": "app.js",
     "start": "nodemon app.js"
@@ -38,5 +16,26 @@
   "bugs": {
     "url": "https://github.com/nwrocketman64/JKWWOODWORKS-main-codebase/issues"
   },
-  "homepage": "https://github.com/nwrocketman64/JKWWOODWORKS-main-codebase#readme"
+  "homepage": "https://github.com/nwrocketman64/JKWWOODWORKS-main-codebase#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^3.1.1",
+    "crypto": "^1.0.1",
+    "csurf": "^1.11.0",
+    "custom-env": "^2.0.1",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.14.0",
+    "mongodb": "^4.2.2",
+    "mongoose": "^6.1.3",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.2",
+    "nunjucks": "^3.2.3",
+    "sharp": "^0.29.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }

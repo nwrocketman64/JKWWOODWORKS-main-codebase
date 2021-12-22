@@ -27,7 +27,7 @@ exports.getLogin = (req, res, next) => {
 // The function logins in a user.
 exports.postLogin = (req, res, next) => {
     // Get the data from the form.
-    const email = req.body.email;
+    const email = req.body.username;
     const password = req.body.password;
     const errors = validationResult(req);
 
@@ -40,42 +40,50 @@ exports.postLogin = (req, res, next) => {
             email: email 
         });
     };
-
-    // If it passes, check to see if the login passes.
-    Users.findOne({username: email})
+    
+    // If the input is valid, start the login process.
+    Users.findOne()
+        .lean()
         .then(user => {
-            if (!user) {
+            // Check to see if the username is correct.
+            if (user.username == email) {
+                // If so, then check to see if the password is correct.
+                bcrypt
+                    // Compare the hashed passwords.
+                    .compare(password, user.password)
+                    .then(doMatch => {
+                        // If the passwords match.
+                        if (doMatch) {
+                            // Login the user in the sessions
+                            req.session.isLoggedIn = true;
+                            req.session.user = user;
+
+                            // Save the session and redirect to admin.
+                            return req.session.save(err => {
+                                res.redirect('/admin');
+                            });
+                        } else {
+                            // If the passwords don't match, redirect to login.
+                            return res.status(422).render('login.html', {
+                                path: '/login',
+                                title: 'Login',
+                                errorMessage: 'Invalid Password',
+                                email: email
+                            });
+                        }
+                    });
+            } else {
+                // If not, redirect to the login page.
                 return res.status(422).render('login.html', {
                     path: '/login',
                     title: 'Login',
-                    errorMessage: 'Invalid email or password.',
+                    errorMessage: 'Invalid Email',
                     email: email
                 });
             }
-            bcrypt
-                .compare(password, user.password)
-                .then(doMatch => {
-                    if (doMatch) {
-                        req.session.isLoggedIn = true;
-                        req.session.user = user;
-                        return req.session.save(err => {
-                            res.redirect('/admin');
-                        });
-                    }
-                    return res.status(422).render('login.html', {
-                        path: '/login',
-                        title: 'Login',
-                        errorMessage: 'Invalid email or password.',
-                        email: email
-                      });
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.redirect('/login');
-                });
         })
         .catch(err => {
-            // If there was an error, redirect to 500 page.
+            // If there was an error, redirect to the 500 page.
             const error = new Error(err);
             error.httpStatusCode = 500;
             return next(error);

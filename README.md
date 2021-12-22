@@ -8,6 +8,7 @@ navigation for any users to lookup products produced by the client. The users ca
 message the client through the contact form page. This website includes features such 
 cookie session and image uploads. The website is designed to run through
 [Heroku](https://www.heroku.com/).
+This website is designed to run on Nodejs version 16.13.1.
 
 # Installing
 To install the website for running on your computer, you can clone the codebase either by
