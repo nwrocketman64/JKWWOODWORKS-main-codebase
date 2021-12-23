@@ -139,7 +139,7 @@ exports.postContact = (req, res, next) => {
 exports.getAbout = (req, res, next) => {
     // Render the about page.
     res.render('about.html', {
-        'title': 'About Us',
+        'title': 'About',
         'path': '/about'
     });
 };
