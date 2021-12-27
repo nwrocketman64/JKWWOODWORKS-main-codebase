@@ -8,21 +8,34 @@ const Products = require('../models/products');
 // GET / aka the homepage
 exports.getHome = (req, res, next) => {
     // Get all the products.
-    return Products.find({}, (err, items) => {
-        // If there was an error, throw an error with 500 error code.
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error ocurred', err);
-        }
-        // If not, render the homepage with one item.
-        else {
-            res.render('index.html', {
+    Products.find()
+        .lean() // Output the query as a JavaScript Object.
+        .then(items => {
+            // Loop through the items to find the lastest item.
+            // Setup the starting item.
+            let lastestItem = items[0];
+            
+            // Loop through each item and find the one with the lastest date.
+            for (let i = 0; i < items.length; i++) {
+                if (lastestItem.date > items[i].date){
+                    lastestItem = items[i];
+                }
+            };
+
+            // Render the homepage with that lastest product.
+            return res.render('index.html', {
                 'title': 'Home',
                 'path': '/home',
-                'product': items[0]
+                'product': lastestItem
             });
-        }
-    });
+        })
+        // If there was an error in the process.
+        .catch(err => {
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 // GET /products
