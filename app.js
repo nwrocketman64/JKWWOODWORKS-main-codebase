@@ -26,7 +26,7 @@ const User = require('./models/user');
 
 // Create the web app.
 const app = express();
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 const MONGODB_URL = process.env.MONGODB_URL;
 
 // Setup the sessions.
