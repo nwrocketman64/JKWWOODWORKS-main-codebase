@@ -20,7 +20,7 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 // POST /admin/add-products
-exports.postAddProduct = (req, res, next) => {
+exports.postAddProduct = async (req, res, next) => {
     // Get the data from the form.
     const name = req.body.name;
     const price = req.body.price;
@@ -43,8 +43,9 @@ exports.postAddProduct = (req, res, next) => {
         });
     }
 
-    // Resized the image using sharp.
-    sharp(path.join(path.dirname(process.mainModule.filename) + '/images/' + image.filename))
+    // Resized the image to the standard size using sharp.
+    await sharp(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/' + image.filename))
+        .rotate()
         .resize({
             fit: sharp.fit.contain,
             width: 800
@@ -53,57 +54,55 @@ exports.postAddProduct = (req, res, next) => {
         .jpeg({
             quality: 80
         })
-        .toFile(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg'))
-        .then(() => {
-            // Create the object for the product.
-            var obj = {
-                title: name,
-                description: description,
-                options: options,
-                price: price,
-                date: Date.now(),
-                url: url,
-                img: {
-                    data: fs.readFileSync(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg')),
-                    contentType: image.mimetype
-                }
-            };
-
-            // Save the product to the database.
-            Products.create(obj, (err) => {
-                // If there was an error.
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('An error ocurred', err);
-                } else {
-                    // Delete the original images.
-                    fs.unlink(path.join(path.dirname(process.mainModule.filename) + '/images/' + image.filename), (err) => {
-                        if (err) {
-                            console.error(err)
-                            res.status(500).send('An error occurred', err);
-                        }
-                    });
-
-                    // Delete the resized image.
-                    fs.unlink(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg'), (err) => {
-                        if (err) {
-                            console.error(err)
-                            res.status(500).send('An error occurred', err);
-                        }
-                    });
-
-                    // redirect to the admin page.
-                    return res.redirect('/admin');
-                }
-            });
-        })
+        .toFile(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/stand-' + image.filename))
         .catch((err) => {
-            // If there was an error.
-            if (err) {
-                console.log(err);
-                return res.status(500).send('An error ocurred', err);
-            }
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
+
+    // Resized the image to the thumbnail size using sharp.
+    await sharp(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/' + image.filename))
+        .rotate()
+        .resize({
+            fit: sharp.fit.contain,
+            width: 500
+        })
+        .toFormat("jpeg")
+        .jpeg({
+            quality: 80
+        })
+        .toFile(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/tmb-' + image.filename))
+        .catch((err) => {
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+
+    // Create the object for the product.
+    var obj = {
+        title: name,
+        description: description,
+        options: options,
+        price: price,
+        date: Date.now(),
+        url: url,
+        img: image.filename
+    };
+
+    // Save the product to the database.
+    Products.create(obj, (err) => {
+        // If there was an error.
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error ocurred', err);
+        } else {
+            // redirect to the admin page.
+            return res.redirect('/admin');
+        }
+    });
 };
 
 // GET /admin/edit-product/:id
@@ -135,7 +134,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 // POST /admin/edit-product/:id
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct = async (req, res, next) => {
     // Get the data from the form.
     const name = req.body.name;
     const price = req.body.price;
@@ -162,8 +161,9 @@ exports.postEditProduct = (req, res, next) => {
         });
     }
 
-    // Resized the image using sharp.
-    sharp(path.join(path.dirname(process.mainModule.filename) + '/images/' + image.filename))
+    // Resized the image to the standard size using sharp.
+    await sharp(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/' + image.filename))
+        .rotate()
         .resize({
             fit: sharp.fit.contain,
             width: 800
@@ -172,54 +172,52 @@ exports.postEditProduct = (req, res, next) => {
         .jpeg({
             quality: 80
         })
-        .toFile(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg'))
-        .then(() => {
-            // Save the product to the database.
-            Products.findByIdAndUpdate({_id: productId}, {
-                title: name,
-                description: description,
-                options: options,
-                price: price,
-                date: Date.now(),
-                url: url,
-                img: {
-                    data: fs.readFileSync(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg')),
-                    contentType: image.mimetype
-                }
-            }, (err) => {
-                // If there was an error.
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('An error ocurred', err);
-                } else {
-                    // Delete the original images.
-                    fs.unlink(path.join(path.dirname(process.mainModule.filename) + '/images/' + image.filename), (err) => {
-                        if (err) {
-                            console.error(err)
-                            res.status(500).send('An error occurred', err);
-                        }
-                    });
-
-                    // Delete the resized image.
-                    fs.unlink(path.join(path.dirname(process.mainModule.filename) + '/images/temp.jpg'), (err) => {
-                        if (err) {
-                            console.error(err)
-                            res.status(500).send('An error occurred', err);
-                        }
-                    });
-
-                    // Redirect to the admin page.
-                    return res.redirect('/admin');
-                }
-            });
-        })
+        .toFile(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/stand-' + image.filename))
         .catch((err) => {
-            // If there was an error.
-            if (err) {
-                console.log(err);
-                return res.status(500).send('An error ocurred', err);
-            }
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
+
+    // Resized the image to the thumbnail size using sharp.
+    await sharp(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/' + image.filename))
+        .rotate()
+        .resize({
+            fit: sharp.fit.contain,
+            width: 500
+        })
+        .toFormat("jpeg")
+        .jpeg({
+            quality: 80
+        })
+        .toFile(path.join(path.dirname(process.mainModule.filename) + '/public/bucket/tmb-' + image.filename))
+        .catch((err) => {
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+    
+    // Save the product to the database.
+    Products.findByIdAndUpdate({_id: productId}, {
+        title: name,
+        description: description,
+        options: options,
+        price: price,
+        date: Date.now(),
+        url: url,
+        img: image.filename,
+    }, (err) => {
+        // If there was an error.
+        if (err) {
+            console.log(err);
+            res.status(500).send('An error ocurred', err);
+        } else {
+            // Redirect to the admin page.
+            return res.redirect('/admin');
+        }
+    });
 };
 
 // GET /admin/delete-product/:id

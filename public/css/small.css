@@ -236,7 +236,7 @@ input[type=text], input[type=number], input[type=password], input[type=file], in
 	margin:3px;
 }
 
-section li{
+section li {
 	padding: 3px;
 }
 
@@ -244,6 +244,7 @@ section li{
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-gap: 10px;
+	align-items: center;
 }
 
 .item {

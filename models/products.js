@@ -12,11 +12,10 @@ const productsSchema = new mongoose.Schema({
     options: String,
     price: Number,
     date: Date,
-    img:
-    {
-        data: Buffer,
-        contentType: String
-    }
+    img: {
+        type: String,
+        required: true
+    },
 });
 
 // Export the schema.

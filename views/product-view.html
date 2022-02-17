@@ -2,8 +2,8 @@
 
 {% block content %}
     <section class="productViewCont">
-        <img src="data:image/{{ item.img.contentType }};base64,{{ item.img.data.toString('base64') }}" alt="{{ item.title }}">
-        <div class=productView>
+        <img src="/bucket/stand-{{ item.img }}" alt="{{ item.title }}">
+        <div class="productView">
             <h2>{{ item.title }}</h2>
             <h3>Price: ${{ item.price }}</h3>
             <h3>Description</h3>

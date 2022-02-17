@@ -8,25 +8,15 @@ const Products = require('../models/products');
 // GET / aka the homepage
 exports.getHome = (req, res, next) => {
     // Get all the products.
-    Products.find()
+    Products.findOne()
         .lean() // Output the query as a JavaScript Object.
-        .then(items => {
-            // Loop through the items to find the lastest item.
-            // Setup the starting item.
-            let lastestItem = items[0];
-            
-            // Loop through each item and find the one with the lastest date.
-            for (let i = 0; i < items.length; i++) {
-                if (lastestItem.date > items[i].date){
-                    lastestItem = items[i];
-                }
-            };
-
+        .sort('-date')
+        .then(item => {
             // Render the homepage with that lastest product.
             return res.render('index.html', {
                 'title': 'Home',
                 'path': '/home',
-                'product': lastestItem
+                'product': item
             });
         })
         // If there was an error in the process.
@@ -42,21 +32,23 @@ exports.getHome = (req, res, next) => {
 // The function delivers the list of products to the user.
 exports.getProducts = (req, res, next) => {
     // Get all the products.
-    return Products.find({}, (err, items) => {
-        // If there was an error, throw an error with 500 error code.
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error ocurred', err);
-        }
-        // If not, render the homepage with one item.
-        else {
-            res.render('products.html', {
+    Products.find()
+        .lean()
+        .sort('-date')
+        .then(items => {
+            // Render the products list page.
+            return res.render('products.html', {
                 'title': 'Products',
                 'path': '/products',
                 'items': items
             });
-        }
-    });
+        })
+        .catch(err => {
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 // GET /product-view/:id
@@ -66,21 +58,21 @@ exports.getProduct = (req, res, next) => {
     const productId = req.params.id;
 
     // Find the product from the database.
-    return Products.findOne({_id: productId}, (err, item) => {
-        // If there was an error, redirect to the 500 page.
-        if (err) {
-            console.log(err);
-            res.status(500).send('An error occurred', err);
-        }
-        // If not, deliever the product view page.
-        else {
-            res.render('product-view.html', {
+    Products.findById(productId)
+        .lean()
+        .then(item => {
+            return res.render('product-view.html', {
                 'title': item['title'],
                 'path': '/products',
                 'item': item
             });
-        }
-    });
+        })
+        .catch(err => {
+            // If there was an error, redirect to the 500 page.
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 // GET /contact
