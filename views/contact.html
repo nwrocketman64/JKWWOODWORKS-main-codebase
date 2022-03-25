@@ -2,34 +2,44 @@
 
 {% block content %}
     <section>
-        <h2>Contact Form</h2>
-        <p>
-            You can use this form to contact us if you have
-            questions / comments. You can also order a
-            product from this form if you don't want to buy
-            it from the other services. Make sure you fill
-            every item in the form. We will try out best to
-            get back to as soon as we can.
-        </p>
-        <p>
-            You can also email us a <a href="mailto:jkwwoodworks1@gmail.com">jkwwoodworks1@gmail.com</a>.
-        </p>
+        <div class="bubble">
+            <h2>Contact Form</h2>
+            <p>
+                You can use this form to contact us if you have
+                questions / comments. You can also order a
+                product from this form if you don't want to buy
+                it from the other services. Make sure you fill
+                every item in the form. We will try out best to
+                get back to as soon as we can.
+            </p>
+            <p>
+                You can also email us a <a href="mailto:jkwwoodworks1@gmail.com">jkwwoodworks1@gmail.com</a>.
+            </p>
+        </div>
     </section>
     <section>
         {% if errorMessage is defined %}
         <p>{{ errorMessage }}</p>
         {% endif %}
-        <div class="container">
+        <div class="container bubble">
             <form action="/contact" method="POST">
-                <label for="fname">First Name</label>
-                <input type="text" id="fname" name="fname" value="{% if firstName is defined %}{{ firstName }}{% endif %}">
-                <label for="lname">Last Name</label>
-                <input type="text" id="lname" name="lname" value="{% if lastName is defined %}{{ lastName }}{% endif %}">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" value="{% if email is defined %}{{ email }}{% endif %}">
-                <label for="comment">Comment</label>
-                <textarea id="comment" name="comment" placeholder="Text goes here" style="height:200px">{% if comment is defined %}{{ comment }}{% endif %}</textarea>
-                <input type="submit" value="Send Form">
+                <div>
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" name="fname" value="{% if firstName is defined %}{{ firstName }}{% endif %}">
+                </div>
+                <div>
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" name="lname" value="{% if lastName is defined %}{{ lastName }}{% endif %}">
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" value="{% if email is defined %}{{ email }}{% endif %}">
+                </div>
+                <div>
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" name="comment" placeholder="Text goes here" style="height:200px">{% if comment is defined %}{{ comment }}{% endif %}</textarea>
+                </div>
+                <div><button type="submit">Send Form</button></div>
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             </form>
         </div>

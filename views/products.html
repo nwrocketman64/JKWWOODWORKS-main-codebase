@@ -2,14 +2,16 @@
 
 {% block content %}
     <section>
-        <h2>The Full List of Products</h2>
+        <div class="bubble">
+            <h2>The Full List of Products</h2>
+        </div>
         <div class="itemList">
         {% for item in items %}
             <div class="item">
                 <img src="/bucket/tmb-{{ item.img }}" alt="{{ item.title }}">
                 <h4>{{ item.title }}</h4>
                 <p>Price: ${{ item.price }}</p>
-                <p><a href="/product-view/{{ item.id }}">Details</a></p>
+                <p><a href="/product-view/{{ item._id }}">Details</a></p>
             </div>
         {% endfor %}
         </div>

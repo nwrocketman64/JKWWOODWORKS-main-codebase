@@ -3,7 +3,13 @@
 {% block content %}
 {% if product %}
     <section>
-        <h2>The Latest Product</h2>
+        <div class="bubble">
+            <h2>The Latest Product</h2>
+            <p>
+                Check out the latest product being made by the
+                JKW Wood Works team!
+            </p>
+        </div>
         <div class="item">
             <img src="/bucket/stand-{{ product.img }}" alt="{{ product.title }}">
             <h3>{{ product.title }}</h3>
@@ -12,6 +18,7 @@
     </section>
 {% endif %}
     <section>
+        <div class="bubble">
         <h2>Site Navigation</h2>
         <p>
             Here are some other links for this website. All links
@@ -30,5 +37,6 @@
                 <a href="/about">About:</a> More information about us.
             </li>
         </ul>
+        </div>
     </section>
 {% endblock %}
