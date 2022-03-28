@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block addons %}
+    <meta name="description" content="{{ item.title }} - {{ item.description | safe }}">
+    <meta name="author" content="JKW Woodworks Team">
+{% endblock %}
+
 {% block content %}
     <section class="productViewCont">
         <img src="/bucket/stand-{{ item.img }}" alt="{{ item.title }}">
