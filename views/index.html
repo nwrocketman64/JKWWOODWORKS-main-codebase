@@ -9,17 +9,15 @@
 {% if product %}
     <section>
         <div class="bubble">
-            <h2>The Latest Product</h2>
+            <h1>JKW Wood Works</h1>
             <p>
                 Welcome to JKW Wood Works, our goal is to provide
                 quality handmade furniture goods that will last
                 for years.
             </p>
-            <p>
-                Check out our latest products
-            </p>
         </div>
         <div class="item">
+            <h2>The Latest Item</h2>
             <img src="/bucket/stand-{{ product.img }}" alt="{{ product.title }}">
             <h3>{{ product.title }}</h3>
             <p><a href="/product-view/{{ product._id }}">Details</a></p>
